@@ -9,10 +9,10 @@ tags: [vla-systems, multimodal-robotics, perception-cognition-action]
 # Vision-Language-Action (VLA) Systems
 
 ## Navigation Links
-- ← [[Introduction to Physical AI & Humanoid Robotics]](#) | [[Week 14 Voice Command Introduction]](#) →
-- ↑ [[Module 4: Vision-Language-Action (VLA)]](#)
-- 🔍 [[VLA Index]](#)
-- 📚 [[VLA Glossary]](#)
+- ← [Introduction to Physical AI & Humanoid Robotics](../intro) | [Week 14 Voice Command Introduction](week-14-voice-command-intro) →
+- ↑ [Module 4: Vision-Language-Action (VLA)](../intro)
+- 🔍 [VLA Index](vla-index)
+- 📚 [VLA Glossary](vla-glossary)
 
 ## Learning Objectives
 
