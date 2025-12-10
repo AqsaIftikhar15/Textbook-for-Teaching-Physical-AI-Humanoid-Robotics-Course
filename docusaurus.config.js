@@ -9,10 +9,10 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://aqsaiftikhar15.github.io/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/',
+  url: 'https://aqsaiftikhar15.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub Pages, this is usually '/<projectName>/'
-  baseUrl: '/Physical-AI-Robotics-Book/',
+  baseUrl: '/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
