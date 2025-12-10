@@ -2,6 +2,7 @@
 title: Introduction
 sidebar_position: 1
 description: Welcome to the Physical AI & Humanoid Robotics Book
+slug: /
 ---
 
 # Introduction to Physical AI & Humanoid Robotics

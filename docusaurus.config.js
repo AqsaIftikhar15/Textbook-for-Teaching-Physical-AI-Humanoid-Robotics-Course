@@ -16,9 +16,9 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Aqsa Iftikhar', // Usually your GitHub org/user name.
+  organizationName: 'aqsaiftikhar15', // Usually your GitHub org/user name.
   projectName: 'Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course', // Usually your repo name.
-  trailingSlash: false,
+  trailingSlash: true,
 
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'ignore',
@@ -37,11 +37,12 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://aqsaiftikhar15.github.io/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/',
+            'https://github.com/AqsaIftikhar15/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/',
         },
         blog: false, // Optional: disable the blog plugin
         theme: {
@@ -105,7 +106,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://aqsaiftikhar15.github.io/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/',
+                href: 'https://github.com/AqsaIftikhar15/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/',
               },
             ],
           },
