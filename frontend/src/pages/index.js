@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import styles from './index.module.css';
+import ChatWidget from '../components/ChatWidget'; // import your chat widget
 
 export default function Home() {
   // Staggered animation delays for module cards
@@ -31,6 +32,8 @@ export default function Home() {
       delay: 0.8,
     },
   ];
+
+  const backendUrl = "http://localhost:8000"; // your backend URL
 
   return (
     <Layout
@@ -68,6 +71,15 @@ export default function Home() {
               delay={mod.delay}
             />
           ))}
+        </section>
+
+        {/* Chat Widget */}
+        <section style={{ marginTop: '2rem' }}>
+          <ChatWidget
+            fullBookEndpoint={`${backendUrl}/query/full`}
+            selectedTextEndpoint={`${backendUrl}/query/selected`}
+            bookId="5ad75c79-c6de-497f-81f5-7cb94a4c50db" // replace with the actual book ID
+          />
         </section>
       </main>
     </Layout>

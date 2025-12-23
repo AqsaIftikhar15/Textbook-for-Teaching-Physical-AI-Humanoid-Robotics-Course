@@ -76,29 +76,47 @@ class StorageService:
             self.logger.error(f"Error initializing database: {e}", exc_info=True)
             raise
 
+    from qdrant_client import models
+
     def _ensure_collection(self):
         """
-        Ensure the Qdrant collection exists with proper configuration
+        Ensure the Qdrant collection exists and has required payload indexes
         """
         try:
             self.logger.info("Ensuring Qdrant collection exists")
 
-            # Check if collection exists
             collections = self.qdrant_client.get_collections()
-            collection_names = [collection.name for collection in collections.collections]
-
+            collection_names = [c.name for c in collections.collections]
+            
             if settings.qdrant_collection_name not in collection_names:
                 self.logger.info(f"Creating Qdrant collection: {settings.qdrant_collection_name}")
-                # Create collection with appropriate vector size (for embed-english-v3.0, it's 1024)
                 self.qdrant_client.create_collection(
                     collection_name=settings.qdrant_collection_name,
-                    vectors_config=models.VectorParams(size=1024, distance=models.Distance.COSINE),
+                    vectors_config=models.VectorParams(
+                        size=1024,  # embed-english-v3.0
+                        distance=models.Distance.COSINE,
+                        ), 
                 )
-                self.logger.info(f"Qdrant collection {settings.qdrant_collection_name} created successfully")
-            else:
-                self.logger.info(f"Qdrant collection {settings.qdrant_collection_name} already exists")
+                self.logger.info("Qdrant collection created")
+
+        # Always ensure payload index exists
+            try:
+                self.qdrant_client.create_payload_index(
+                    collection_name=settings.qdrant_collection_name,
+                    field_name="book_id",
+                    field_schema=models.PayloadSchemaType.KEYWORD,
+                    )
+                self.logger.info("Payload index for 'book_id' created")
+
+            except Exception as e:
+            # Index already exists → safe to ignore
+                if "already exists" in str(e).lower():
+                    self.logger.info("Payload index for 'book_id' already exists")
+                else:
+                    raise
+
         except Exception as e:
-            self.logger.error(f"Error ensuring collection exists: {e}", exc_info=True)
+            self.logger.error("Failed to ensure Qdrant collection", exc_info=True)
             raise
 
     def reconnect_neon_if_needed(self):
@@ -176,51 +194,60 @@ class StorageService:
         except Exception as e:
             self.logger.error(f"Error storing chunks: {e}", exc_info=True)
             raise
-
-    def search_chunks(self, query_embedding: List[float], book_id: Optional[UUID] = None,
-                     limit: int = 5) -> List[Dict]:
+    def search_chunks(
+            self,
+            query_embedding: List[float],
+            book_id: Optional[UUID] = None,
+            limit: int = 5) -> List[Dict]:
         """
         Search for relevant chunks based on query embedding
         """
         try:
-            self.logger.info(f"Searching for chunks, limit: {limit}, book_id: {book_id}")
-
-            # Prepare filter conditions
+            self.logger.info(
+                f"Searching for chunks, limit: {limit}, book_id: {book_id}"
+                )
             filters = None
             if book_id:
                 filters = models.Filter(
                     must=[
                         models.FieldCondition(
-                            key="payload.book_id",
+                            key="book_id",
                             match=models.MatchValue(value=str(book_id))
-                        )
-                    ]
-                )
-
-            # Search in Qdrant
-            search_results = self.qdrant_client.search(
-                collection_name=settings.qdrant_collection_name,
-                query_vector=query_embedding,
-                query_filter=filters,
-                limit=limit
+                    )
+                ]
             )
 
-            # Extract results
-            results = []
-            for hit in search_results:
-                result = {
-                    'id': hit.id,
-                    'score': hit.score,
-                    'payload': hit.payload,
-                    'text': self.get_chunk_text(str(hit.id))  # Get text from Postgres
-                }
-                results.append(result)
+        # Query Qdrant
+            search_results = self.qdrant_client.query_points(
+                collection_name=settings.qdrant_collection_name,
+                query=query_embedding,
+                query_filter=filters,
+                limit=limit
+                )
 
-            self.logger.info(f"Found {len(results)} relevant chunks for query")
+            results = []
+
+        # IMPORTANT: iterate over search_results.points
+            for hit in search_results.points:
+                 results.append({
+                    "id": hit.id,
+                    "score": hit.score,
+                    "payload": hit.payload,
+                    "text": self.get_chunk_text(str(hit.id))
+                    })
+
+            self.logger.info(
+                f"Found {len(results)} relevant chunks for query"
+                )
             return results
+
         except Exception as e:
-            self.logger.error(f"Error searching chunks: {e}", exc_info=True)
+            self.logger.error(
+                f"Error searching chunks: {e}",
+                exc_info=True
+            )
             raise
+
 
     def get_chunk_text(self, chunk_id: str) -> str:
         """

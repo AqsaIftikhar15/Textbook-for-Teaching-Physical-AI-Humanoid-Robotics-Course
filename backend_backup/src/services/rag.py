@@ -73,17 +73,17 @@ class RAGService:
 
             self.logger.debug("Sending generation request to Cohere")
             try:
-                response = self.client.generate(
-                    model=self.generation_model,
-                    prompt=prompt,
-                    max_tokens=300,  # Adjust based on requirements
-                    temperature=temperature
+                response = self.client.chat(
+                model="command-xlarge-nightly",
+                message=prompt,
+                temperature=temperature
                 )
+
             except Exception as e:
                 self.logger.error(f"Error communicating with Cohere API: {e}", exc_info=True)
                 raise
 
-            generated_text = response.generations[0].text.strip()
+            generated_text = response.text
 
             # Count tokens (approximate)
             tokens_used = len(generated_text.split())
@@ -123,17 +123,16 @@ class RAGService:
 
             self.logger.debug("Sending selected-text generation request to Cohere")
             try:
-                response = self.client.generate(
-                    model=self.generation_model,
-                    prompt=prompt,
-                    max_tokens=300,  # Adjust based on requirements
+                response = self.client.chat(
+                    model="command-xlarge-nightly",
+                    message=prompt,
                     temperature=temperature
                 )
             except Exception as e:
                 self.logger.error(f"Error communicating with Cohere API: {e}", exc_info=True)
                 raise
 
-            generated_text = response.generations[0].text.strip()
+            generated_text = response.text
 
             # Count tokens (approximate)
             tokens_used = len(generated_text.split())
