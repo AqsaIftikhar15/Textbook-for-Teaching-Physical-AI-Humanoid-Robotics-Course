@@ -33,7 +33,7 @@ export default function Home() {
     },
   ];
 
-  const backendUrl = "http://localhost:8000"; // your backend URL
+  const backendUrl = "https://aqsaiftikhar-physical-ai-book-backend.hf.space"; // your backend URL
 
   return (
     <Layout
@@ -75,11 +75,13 @@ export default function Home() {
 
         {/* Chat Widget */}
         <section style={{ marginTop: '2rem' }}>
-          <ChatWidget
-            fullBookEndpoint={`${backendUrl}/query/full`}
-            selectedTextEndpoint={`${backendUrl}/query/selected`}
-            bookId="5ad75c79-c6de-497f-81f5-7cb94a4c50db" // replace with the actual book ID
-          />
+
+          <ChatWidget  
+            fullBookEndpoint={`${backendUrl}/public/query/full`}
+            selectedTextEndpoint={`${backendUrl}/public/query/full`}
+            bookId="5ad75c79-c6de-497f-81f5-7cb94a4c50db"
+            />
+
         </section>
       </main>
     </Layout>
