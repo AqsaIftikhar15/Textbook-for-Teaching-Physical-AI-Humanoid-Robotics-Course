@@ -87,7 +87,7 @@ class StorageService:
 
             collections = self.qdrant_client.get_collections()
             collection_names = [c.name for c in collections.collections]
-            
+
             if settings.qdrant_collection_name not in collection_names:
                 self.logger.info(f"Creating Qdrant collection: {settings.qdrant_collection_name}")
                 self.qdrant_client.create_collection(
@@ -95,7 +95,7 @@ class StorageService:
                     vectors_config=models.VectorParams(
                         size=1024,  # embed-english-v3.0
                         distance=models.Distance.COSINE,
-                        ), 
+                        ),
                 )
                 self.logger.info("Qdrant collection created")
 
@@ -218,17 +218,17 @@ class StorageService:
             )
 
         # Query Qdrant
-            search_results = self.qdrant_client.query_points(
+            search_results = self.qdrant_client.search(
                 collection_name=settings.qdrant_collection_name,
-                query=query_embedding,
+                query_vector=query_embedding,
                 query_filter=filters,
                 limit=limit
                 )
 
             results = []
 
-        # IMPORTANT: iterate over search_results.points
-            for hit in search_results.points:
+        # IMPORTANT: iterate over search_results
+            for hit in search_results:
                  results.append({
                     "id": hit.id,
                     "score": hit.score,
