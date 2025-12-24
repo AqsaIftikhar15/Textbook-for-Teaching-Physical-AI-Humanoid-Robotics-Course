@@ -27,7 +27,7 @@ export default function Home() {
     },
     {
       title: "Module 4: VLA",
-      description: "Vision–Language–Action and multimodal robotics",
+      description: "Vision-Language-Action and multimodal robotics",
       link: "/docs/module-4-vla/week-13-vla-concepts",
       delay: 0.8,
     },
@@ -76,9 +76,9 @@ export default function Home() {
         {/* Chat Widget */}
         <section style={{ marginTop: '2rem' }}>
 
-          <ChatWidget  
-            fullBookEndpoint={`${backendUrl}/public/query/full`}
-            selectedTextEndpoint={`${backendUrl}/public/query/full`}
+          <ChatWidget
+            fullBookEndpoint={`https://aqsaiftikhar-physical-ai-book-backend.hf.space/query/full`}
+            selectedTextEndpoint={`https://aqsaiftikhar-physical-ai-book-backend.hf.space/query/selected`}
             bookId="5ad75c79-c6de-497f-81f5-7cb94a4c50db"
             />
 
