@@ -10,7 +10,7 @@ import logging
 from fastapi import Security, Depends, HTTPException
 from fastapi.security import APIKeyHeader
 from src.config.settings import settings
-from .routes import public_query 
+from .routes import public_query
 
 # Set up basic logging
 logging.basicConfig(level=logging.INFO)
@@ -45,9 +45,9 @@ async def get_api_key(api_key: str = Security(api_key_header)):
     return api_key
 
 # Include routes
-app.include_router(ingest.router, prefix="/ingest", tags=["ingestion"], dependencies=[Depends(get_api_key)])
-app.include_router(query.router, prefix="/query", tags=["query"], dependencies=[Depends(get_api_key)])
-app.include_router(monitor.router, prefix="/monitor", tags=["monitoring"], dependencies=[Depends(get_api_key)])
+app.include_router(ingest.router, prefix="/ingest", tags=["ingestion"])
+app.include_router(query.router, prefix="/query", tags=["query"])
+app.include_router(monitor.router, prefix="/monitor", tags=["monitoring"])
 
 app.include_router(
     public_query.router,
