@@ -10,6 +10,7 @@ import logging
 from fastapi import Security, Depends, HTTPException
 from fastapi.security import APIKeyHeader
 from src.config.settings import settings
+from .routes import public_query 
 
 # Set up basic logging
 logging.basicConfig(level=logging.INFO)
@@ -24,7 +25,9 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=["*",
+                   "http://localhost:3000/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/",
+                   "https://aqsaiftikhar15.github.io/Textbook-for-Teaching-Physical-AI-Humanoid-Robotics-Course/"],  # In production, replace with specific origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,6 +48,12 @@ async def get_api_key(api_key: str = Security(api_key_header)):
 app.include_router(ingest.router, prefix="/ingest", tags=["ingestion"], dependencies=[Depends(get_api_key)])
 app.include_router(query.router, prefix="/query", tags=["query"], dependencies=[Depends(get_api_key)])
 app.include_router(monitor.router, prefix="/monitor", tags=["monitoring"], dependencies=[Depends(get_api_key)])
+
+app.include_router(
+    public_query.router,
+    prefix="/public",
+    tags=["public"]
+)
 
 
 @app.exception_handler(RequestValidationError)
