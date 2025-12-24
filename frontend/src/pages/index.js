@@ -76,7 +76,7 @@ export default function Home() {
         {/* Chat Widget */}
         <section style={{ marginTop: '2rem' }}>
 
-          <ChatWidget
+          <ChatWidget  
             fullBookEndpoint={`https://aqsaiftikhar-physical-ai-book-backend.hf.space/query/full`}
             selectedTextEndpoint={`https://aqsaiftikhar-physical-ai-book-backend.hf.space/query/selected`}
             bookId="5ad75c79-c6de-497f-81f5-7cb94a4c50db"

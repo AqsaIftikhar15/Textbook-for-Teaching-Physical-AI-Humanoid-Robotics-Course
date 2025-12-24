@@ -34,9 +34,7 @@ export default function ChatWidget({ fullBookEndpoint, selectedTextEndpoint, boo
 
       const response = await fetch(apiEndpoint, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json','Authorization': 'Bearer your_api_key_here'},
         body: JSON.stringify(body),
       });
 
